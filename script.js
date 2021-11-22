@@ -124,7 +124,7 @@ function setGenre() {
 }
 
 
-//Muestra el rojo los generos seleccionados, y tambien los deselecciona
+//Muestra en rojo los generos seleccionados, y tambien los deselecciona
 function highlightSelection() {
     const tags = document.querySelectorAll('.tag')
     tags.forEach(tag => {
