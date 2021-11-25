@@ -5,87 +5,87 @@ const API_KEY = 'api_key=174d72cbbf9bc71dea09d77e4f12e272'
 const BASE_URL = 'https://api.themoviedb.org/3'
 const API_URL = BASE_URL + '/discover/movie?sort_by=popularity.desc&' + API_KEY
 const IMG_URL = 'https://image.tmdb.org/t/p/w500'
-const SEARCH_URL = BASE_URL + '/search/movie/?'+API_KEY
+const SEARCH_URL = BASE_URL + '/search/movie/?' + API_KEY
 
-const genres =[
+const genres = [
 
-       {
-          "id":28,
-          "name":"Action"
-       },
-       {
-          "id":12,
-          "name":"Adventure"
-       },
-       {
-          "id":16,
-          "name":"Animation"
-       },
-       {
-          "id":35,
-          "name":"Comedy"
-       },
-       {
-          "id":80,
-          "name":"Crime"
-       },
-       {
-          "id":99,
-          "name":"Documentary"
-       },
-       {
-          "id":18,
-          "name":"Drama"
-       },
-       {
-          "id":10751,
-          "name":"Family"
-       },
-       {
-          "id":14,
-          "name":"Fantasy"
-       },
-       {
-          "id":36,
-          "name":"History"
-       },
-       {
-          "id":27,
-          "name":"Horror"
-       },
-       {
-          "id":10402,
-          "name":"Music"
-       },
-       {
-          "id":9648,
-          "name":"Mystery"
-       },
-       {
-          "id":10749,
-          "name":"Romance"
-       },
-       {
-          "id":878,
-          "name":"Science Fiction"
-       },
-       {
-          "id":10770,
-          "name":"TV Movie"
-       },
-       {
-          "id":53,
-          "name":"Thriller"
-       },
-       {
-          "id":10752,
-          "name":"War"
-       },
-       {
-          "id":37,
-          "name":"Western"
-       }
-    ]
+    {
+        "id": 28,
+        "name": "Action"
+    },
+    {
+        "id": 12,
+        "name": "Adventure"
+    },
+    {
+        "id": 16,
+        "name": "Animation"
+    },
+    {
+        "id": 35,
+        "name": "Comedy"
+    },
+    {
+        "id": 80,
+        "name": "Crime"
+    },
+    {
+        "id": 99,
+        "name": "Documentary"
+    },
+    {
+        "id": 18,
+        "name": "Drama"
+    },
+    {
+        "id": 10751,
+        "name": "Family"
+    },
+    {
+        "id": 14,
+        "name": "Fantasy"
+    },
+    {
+        "id": 36,
+        "name": "History"
+    },
+    {
+        "id": 27,
+        "name": "Horror"
+    },
+    {
+        "id": 10402,
+        "name": "Music"
+    },
+    {
+        "id": 9648,
+        "name": "Mystery"
+    },
+    {
+        "id": 10749,
+        "name": "Romance"
+    },
+    {
+        "id": 878,
+        "name": "Science Fiction"
+    },
+    {
+        "id": 10770,
+        "name": "TV Movie"
+    },
+    {
+        "id": 53,
+        "name": "Thriller"
+    },
+    {
+        "id": 10752,
+        "name": "War"
+    },
+    {
+        "id": 37,
+        "name": "Western"
+    }
+]
 
 const main = document.getElementById('main')
 const form = document.getElementById('form')
@@ -113,16 +113,16 @@ function setGenre() {
         t.id = genre.id
         t.innerText = genre.name
         t.addEventListener('click', () => {
-            if(selectedGenre.length == 0) { //si el array esta vacio
+            if (selectedGenre.length == 0) { //si el array esta vacio
                 selectedGenre.push(genre.id)
-            }else {
-                if(selectedGenre.includes(genre.id)) {
+            } else {
+                if (selectedGenre.includes(genre.id)) {
                     selectedGenre.forEach((id, idx) => {
-                        if(id == genre.id) {
+                        if (id == genre.id) {
                             selectedGenre.splice(idx, 1)// elimina del array por indice
                         }
                     })
-                }else {
+                } else {
                     selectedGenre.push(genre.id)
                 }
             }
@@ -141,18 +141,18 @@ function highlightSelection() {
         tag.classList.remove('highlight')
     })
     clearBtn()
-    if(selectedGenre.length !=0){
-        selectedGenre.forEach(id => {    
+    if (selectedGenre.length != 0) {
+        selectedGenre.forEach(id => {
             const highlightedTag = document.getElementById(id)
             highlightedTag.classList.add('highlight')
         })
-    }   
+    }
 }
 
 //boton para limpiar los generos seleccionados
 function clearBtn() {
     let clearBtn = document.getElementById('clear')
-    if(clearBtn) {
+    if (clearBtn) {
 
         clearBtn.classList.add('highlight')
 
@@ -167,10 +167,10 @@ function clearBtn() {
             setGenre() //reinicia generos
             getMovies(API_URL) // reinicia datos
         })
-        tagsEl.append(clear)    
+        tagsEl.append(clear)
     }
 
-    
+
 }
 
 
@@ -181,50 +181,50 @@ getMovies(API_URL)
 //Funcion principal con Fetch incial
 function getMovies(url) {
     lastUrl = url
-        fetch(url).then(res => res.json()).then(data => {
-            console.log(data.results)
-            if(data.results.length !== 0) {
-                showMovies(data.results)
-                currentPage = data.page
-                nextPage = currentPage + 1
-                prevPage = currentPage - 1
-                totalPages = data.total_pages
+    fetch(url).then(res => res.json()).then(data => {
+        console.log(data.results)
+        if (data.results.length !== 0) {
+            showMovies(data.results)
+            currentPage = data.page
+            nextPage = currentPage + 1
+            prevPage = currentPage - 1
+            totalPages = data.total_pages
 
-                current.innerHTML = currentPage
+            current.innerHTML = currentPage
 
-                if(currentPage <= 1) {
-                    prev.classList.add('disabled')
-                    next.classList.remove('disabled')
-                } else if(currentPage >= totalPages) {
-                    prev.classList.remove('disabled')
-                    next.classList.add('disabled')
-                } else {
-                    prev.classList.remove('disabled')
-                    next.classList.remove('disabled')
-                }
-
-                tagsEl.scrollIntoView({behavior : 'smooth'})
-
-            } else{
-                main.innerHTML = `<h1 class="no-results">No Results Found</h1>`
+            if (currentPage <= 1) {
+                prev.classList.add('disabled')
+                next.classList.remove('disabled')
+            } else if (currentPage >= totalPages) {
+                prev.classList.remove('disabled')
+                next.classList.add('disabled')
+            } else {
+                prev.classList.remove('disabled')
+                next.classList.remove('disabled')
             }
-            
-        })
+
+            tagsEl.scrollIntoView({ behavior: 'smooth' })
+
+        } else {
+            main.innerHTML = `<h1 class="no-results">No Results Found</h1>`
+        }
+
+    })
 }
 
 
 //muestra en el DOM
 function showMovies(data) {
-    main.innerHTML= ''
+    main.innerHTML = ''
 
     data.forEach(movie => {
-        const {title, poster_path, vote_average, overview} = movie
+        const { title, poster_path, vote_average, overview, id } = movie
         const movieEl = document.createElement('div')
         movieEl.classList.add('movie')
         movieEl.innerHTML = //operador ternario en 'img src'. Si no encuentra la img usa el link
-        `
+            `
             
-            <img src="${poster_path ? IMG_URL+poster_path : 'http://via.placeholder.com/1080x1580'}" alt="${title}"> 
+            <img src="${poster_path ? IMG_URL + poster_path : 'http://via.placeholder.com/1080x1580'}" alt="${title}"> 
             
             <div class="movie-info">
                 <h3>${title}</h3>
@@ -234,19 +234,64 @@ function showMovies(data) {
             <div class="overview">
                 <h3>Overview</h3>
                 ${overview}
-            </div>`       
-    
+                <br/>
+                <button class="know-more" id=${id}>Know More</button>
+            </div>`
+
         main.appendChild(movieEl)
-    })  
+
+        document.getElementById(id).addEventListener('click', () => {
+            openNav(movie)
+        })
+    })
+}
+
+const overlayContent = document.getElementById('overlay-content')
+/* Open when someone clicks on the span element */
+function openNav(movie) {
+    let id = movie.id
+    fetch(BASE_URL + '/movie/' + id + '/videos?' + API_KEY).then(res => res.json())
+        .then(videoData => {
+            if (videoData) {
+                document.getElementById("myNav").style.width = "100%";
+                if (videoData.results.length > 0) {
+                    var embed = []
+                    videoData.results.forEach(video => {
+                        let {key, name, site} = video
+
+                        if(site == 'YouTube'){
+                            embed.push(`
+                                <iframe width="560" height="315" 
+                                src="https://www.youtube.com/embed/${key}" 
+                                title="${name}" 
+                                frameborder="0" allow="accelerometer; autoplay; 
+                                clipboard-write; encrypted-media; gyroscope; 
+                                picture-in-picture" allowfullscreen></iframe>
+                            `)
+                        }
+                    })
+
+                    overlayContent.innerHTML = embed.join('')
+                }else {
+                    overlayContent.innerHTML = `<h1 class="no-results">No Results Found</h1>`
+                }
+            }
+        })
+
+}
+
+/* Close when someone clicks on the "x" symbol inside the overlay */
+function closeNav() {
+    document.getElementById("myNav").style.width = "0%";
 }
 
 
 //Cambia color segun el rating de la pelicula
-function getColor(vote){
-    
-    if(vote>=8){
+function getColor(vote) {
+
+    if (vote >= 8) {
         return 'green'
-    } else if(vote>= 6) {
+    } else if (vote >= 6) {
         return 'orange'
     } else {
         return 'red'
@@ -263,21 +308,21 @@ form.addEventListener('submit', (e) => {
     setGenre()  /*reinicia generos porque si filtramos 
     por genero y despues buscamos con el search, quedarian los 
     generos seleccionados*/
-    if(searchTerm) {
-        getMovies(SEARCH_URL+'&query='+searchTerm)
+    if (searchTerm) {
+        getMovies(SEARCH_URL + '&query=' + searchTerm)
     } else {
         getMovies(API_URL)
     }
 })
 
 prev.addEventListener('click', () => {
-    if(prevPage > 0) {
+    if (prevPage > 0) {
         pageCall(prevPage)
     }
 })
 
 next.addEventListener('click', () => {
-    if(nextPage <= totalPages) {
+    if (nextPage <= totalPages) {
         pageCall(nextPage)
     }
 })
@@ -285,14 +330,14 @@ next.addEventListener('click', () => {
 function pageCall(page) {
     let urlSplit = lastUrl.split('?')
     let queryParams = urlSplit[1].split('&')
-    let key = queryParams[queryParams.length -1].split('-') //obteniendo el ultimo elemento de queryparams y aplicando split
-    if(key[0] != 'page') {
+    let key = queryParams[queryParams.length - 1].split('-') //obteniendo el ultimo elemento de queryparams y aplicando split
+    if (key[0] != 'page') {
         let url = lastUrl + '&page=' + page
         getMovies(url)
-    }else {
+    } else {
         key[1] = page.toString()
         let a = key.join('=')
-        queryParams[queryParams.length -1] = a
+        queryParams[queryParams.length - 1] = a
         let b = queryParams.join('&')
         let url = urlSplit[0] + '?' + b
         getMovies(url)
